@@ -10,3 +10,26 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+/* Увеличиваем размер Select2 */
+.select2-container .select2-selection--multiple {
+    width: 100% !important; /* Ширина на всю доступную область */
+    min-height: 40px; /* Минимальная высота поля ввода */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.select2-container .select2-selection__rendered {
+    padding: 8px 10px; /* Отступы внутри селекта */
+}
+
+.select2-container .select2-selection__arrow {
+    top: 10px; /* Позиционирование стрелки */
+}
+
+.select2-container--default .select2-selection__clear {
+    top: 0; /* Позиционирование кнопки очистки */
+}
+
+.select2-container .select2-search__field {
+    height: 30px; /* Высота поля ввода */
+    font-size: 16px; /* Размер шрифта в поиске */
+}

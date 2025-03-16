@@ -2,47 +2,55 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Атрибуты, которые можно массово заполнять.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'api_token',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Атрибуты, которые должны быть скрыты в JSON-ответах.
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Автоматическое приведение типов для атрибутов.
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * Генерация уникального API-токена.
+     */
+    public function generateApiToken()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        $this->api_token = hash('sha256', $this->id . $this->email . $this->password . time());
+        $this->save();
+    }
+
+    /**
+     * Связь "один ко многим" — у пользователя есть много задач.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }
